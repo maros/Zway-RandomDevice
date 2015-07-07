@@ -1,0 +1,61 @@
+{
+    "dependencies": [],
+    "singleton": true,
+    "category": "schedule",
+    "author": "Maroš Kollár",
+    "homepage": "http://k-1.com",
+    "icon": "icon.png",
+    "version": "1.0.0",
+    "maturity": "stable",
+    "repository": {
+        "type": "git",
+        "source": "https://github.com/maros/Zway-RandomDevice"
+    },
+    "defaults": {
+        "title": "__title__",
+        "description": "__description__"
+        "timeFrom": 5,
+        "timeTo": 15,
+        "probability": 10
+    },
+    "schema": {
+        "type": "object",
+        "properties": {
+            "timeFrom": {
+                "type": "integer",
+                "minimum": 1,
+                "required": true
+            },
+            "timeFrom": {
+                "type": "integer",
+                "minimum": 1,
+                "required": true
+            },
+            "probability": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 100,
+                "required": true
+            },
+            "randomDevices": {
+                "type": "array",
+                "items": {
+                    "field": "enum",
+                    "datasource": "namespaces",
+                    "enum": "namespaces:devices_doorlock:deviceId,namespaces:devices_switchBinary:deviceId",
+                    "required": true
+                }
+            }
+        },
+        "required": true
+    },
+    "options": {
+        "fields": {
+            "timeFrom": {
+                "label": "__time_from_label__",
+                "type": "select",
+                "optionLabels": ["On", "Off"]
+            }
+        }
+    }
+}
