@@ -1,6 +1,6 @@
 {
     "dependencies": [],
-    "singleton": true,
+    "singleton": false,
     "category": "schedule",
     "author": "Maroš Kollár",
     "homepage": "http://k-1.com",
@@ -26,7 +26,7 @@
                 "minimum": 1,
                 "required": true
             },
-            "timeFrom": {
+            "timeTo": {
                 "type": "integer",
                 "minimum": 1,
                 "required": true
@@ -37,7 +37,7 @@
                 "maximum": 100,
                 "required": true
             },
-            "randomDevices": {
+            "devices": {
                 "type": "array",
                 "items": {
                     "field": "enum",
@@ -53,8 +53,26 @@
         "fields": {
             "timeFrom": {
                 "label": "__time_from_label__",
-                "type": "select",
-                "optionLabels": ["On", "Off"]
+                "type": "text"
+            },
+            "timeTo": {
+                "label": "__time_to_label__",
+                "type": "text"
+            },
+            "probability": {
+                "label": "__probability_label__",
+                "type": "text"
+            },
+            "devices": {
+                "label": "__devices_label__",
+                "fields": {
+                    "item": {
+                        "type": "select",
+                        "datasource": "namespaces",
+                        "field": "devices",
+                        "optionLabels": "namespaces:devices_sensorBinary:deviceName,namespaces:devices_sensorMultilevel:deviceName"
+                    }
+                }
             }
         }
     }
