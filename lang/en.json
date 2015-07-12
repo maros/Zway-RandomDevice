@@ -3,5 +3,7 @@
   "description": "Controll binary switches randomly",
   "time_from_label": "From time",
   "time_to_label": "To time",
-  "devices_label": "Devices"
+  "devices_label": "Devices",
+  "probability_label": "Probability",
+  "probability_helper": "TODO"
 }
