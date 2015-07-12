@@ -13,7 +13,7 @@
     },
     "defaults": {
         "title": "__title__",
-        "description": "__description__"
+        "description": "__description__",
         "timeFrom": 5,
         "timeTo": 15,
         "probability": 10
@@ -42,7 +42,7 @@
                 "items": {
                     "field": "enum",
                     "datasource": "namespaces",
-                    "enum": "namespaces:devices_doorlock:deviceId,namespaces:devices_switchBinary:deviceId",
+                    "enum": "namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName",
                     "required": true
                 }
             }
@@ -61,7 +61,8 @@
             },
             "probability": {
                 "label": "__probability_label__",
-                "type": "text"
+                "type": "text",
+                "helper": "__probability_helper__"
             },
             "devices": {
                 "label": "__devices_label__",
@@ -70,7 +71,7 @@
                         "type": "select",
                         "datasource": "namespaces",
                         "field": "devices",
-                        "optionLabels": "namespaces:devices_sensorBinary:deviceName,namespaces:devices_sensorMultilevel:deviceName"
+                        "optionLabels": "namespaces:devices_switchBinary:deviceName,namespaces:devices_switchMultilevel:deviceName"
                     }
                 }
             }
