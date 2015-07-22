@@ -46,6 +46,9 @@ RandomDevice.prototype.init = function (config) {
         },
         handler: function(command, args) {
             var level = command;
+            if (level !== 'on') {
+                level = 'off';
+            }
             this.set("metrics:level", level);
             this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+level+".png");
         },
@@ -81,7 +84,7 @@ RandomDevice.prototype.rollDice = function () {
         randomOn = true;
     });
     
-    if (self.vDev.get('metrics:level') == 'off') {
+    if (self.vDev.get('metrics:level') !== 'on') {
         return;
     }
     
