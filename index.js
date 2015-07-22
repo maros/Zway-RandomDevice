@@ -71,11 +71,19 @@ RandomDevice.prototype.rollDice = function () {
         var deviceOff = deviceObject.get('metrics:autooff');
         var deviceLevel = deviceObject.get('metrics:level');
         
-        if (deviceObject.get('deviceType') === 'switchBinary'
-            && deviceLevel === 'off') {
-            return;
-        } else if (deviceObject.get('deviceType') === 'switchMultilevel'
-            && deviceLevel === 0) {
+        if (
+            (
+                deviceObject.get('deviceType') === 'switchBinary' 
+                && deviceLevel === 'off'
+            )
+            || 
+            (
+                deviceObject.get('deviceType') === 'switchMultilevel'
+                && deviceLevel === 0
+            )) {
+            if (typeof(deviceOff) !== 'null') {
+                deviceObject.set('metrics:autooff',null);
+            }
             return;
         }
         if (typeof(deviceOff) !== 'null' && deviceOff < currentTime) {
