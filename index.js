@@ -30,19 +30,19 @@ RandomDevice.prototype.init = function (config) {
     RandomDevice.super_.prototype.init.call(this, config);
     var self=this;
     
+    var langFile = self.controller.loadModuleLang("RandomDevice");
+    
     this.vDev = this.controller.devices.create({
         deviceId: "RandomDevice_" + this.id,
         defaults: {
             metrics: {
                 level: 'off',
-                title: this.config.title
+                title: langFile.title,
+                icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png"
             }
         },
         overlay: {
-            deviceType: 'switchBinary',
-            metrics: {
-                title: this.config.title
-            }
+            deviceType: 'switchBinary'
         },
         handler: function(command, args) {
             var level = command;

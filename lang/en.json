@@ -1,6 +1,6 @@
 {
   "title": "Random device",
-  "description": "Controll binary switches randomly",
+  "description": "Control switches and dimmers randomly",
   "time_from_label": "From time",
   "time_to_label": "To time",
   "devices_label": "Devices",
