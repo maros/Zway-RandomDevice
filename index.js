@@ -5,7 +5,7 @@ Version: 1.0.0
 -----------------------------------------------------------------------------
 Author: maros@k-1.com <maros@k-1.com>
 Description:
-    Randomly enable/disable binary devices
+    Randomly enable/disable devices
 
 ******************************************************************************/
 
@@ -30,8 +30,24 @@ RandomDevice.prototype.init = function (config) {
     RandomDevice.super_.prototype.init.call(this, config);
     var self=this;
     
+    var currentTime = (new Date()).getTime();
     var langFile = self.controller.loadModuleLang("RandomDevice");
+    this.timerOff = null;
     
+    // Read status from file and init
+    this.statusId = "RandomDevice_" + self.id;
+    this.status = loadObject(this.statusId);
+    if (! this.status ) {
+        this.status = { 'mode': false };
+    } else if (this.status === true) {
+        if (this.status.off > currentTime) {
+            self.timerOff = setTimeout(function() {
+                self.randomOff();
+            },this.status.off);
+        }
+    }
+    
+    // Create vdev
     this.vDev = this.controller.devices.create({
         deviceId: "RandomDevice_" + this.id,
         defaults: {
@@ -49,13 +65,17 @@ RandomDevice.prototype.init = function (config) {
             if (level !== 'on') {
                 level = 'off';
             }
+            if (level ==='off'
+                && self.status.mode === true) {
+                self.randomOff();
+            }
             this.set("metrics:level", level);
             this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+level+".png");
         },
         moduleId: this.id
     });
     
-    this.timer = setInterval(function() {
+    this.timerRoll = setInterval(function() {
         self.rollDice();
     }, 1000*60);
 };
@@ -66,11 +86,15 @@ RandomDevice.prototype.rollDice = function () {
     var currentTime = (new Date()).getTime();
     var randomOn = false;
     var devicesConfig = self.config.devices;
+    
+    if (self.status.mode === true
+        && self.status.off < currentTime) {
+        self.randomOff();
+    }
+    
     _.each(devicesConfig,function(deviceId) {
         var deviceObject = self.controller.devices.get(deviceId);
-        var deviceOff = deviceObject.get('metrics:autooff');
-        var deviceLevel = deviceObject.get('metrics:level');
-        
+        var deviceLevel  = deviceObject.get('metrics:level');
         if (
             (
                 deviceObject.get('deviceType') === 'switchBinary' 
@@ -81,66 +105,115 @@ RandomDevice.prototype.rollDice = function () {
                 deviceObject.get('deviceType') === 'switchMultilevel'
                 && deviceLevel === 0
             )) {
-            if (typeof(deviceOff) !== 'null') {
-                deviceObject.set('metrics:autooff',null);
+            if (self.status.mode === true
+                && self.status.device === deviceId) {
+                self.randomOff();
             }
             return;
-        }
-        if (typeof(deviceOff) !== 'null' && deviceOff < currentTime) {
-            self.autoOff(deviceObject);
         }
         randomOn = true;
     });
     
-    if (self.vDev.get('metrics:level') !== 'on') {
-        return;
-    }
-    
+    // Check any device on
     if (randomOn) {
         return;
     }
     
+    
+    // Check random device on
+    if (self.vDev.get('metrics:level') !== 'on') {
+        return;
+    }
+    
+    // Roll dice for trigger
     var randomTrigger = Math.round(Math.random() * 100);
     if (randomTrigger > self.config.probability) {
         return;
     }
     
-    var randomDevice = Math.round(Math.random() * (devicesConfig.length-1));
-    var deviceId = devicesConfig[randomDevice];
-    var deviceObject = self.controller.devices.get(deviceId);
-    var randomTime = Math.round(Math.random() * (self.config.timeTo - self.config.timeFrom)) + self.config.timeFrom;
-    var offTime = currentTime + (randomTime * 60 * 1000);
+    // Roll dice for device
+    var randomDevice    = Math.round(Math.random() * (devicesConfig.length-1));
+    var deviceId        = devicesConfig[randomDevice];
     
-    console.log('Turning on random device '+deviceId+' for '+randomTime+' minutes');
+    
+    // Roll dice for duration
+    var interval        = parseInt(self.config.timeTo) - parseInt(self.config.timeFrom);
+    var minutes         = Math.round(Math.random() * interval) + parseInt(self.config.timeFrom);
+    var deviceObject    = self.controller.devices.get(deviceId);
+    var offTime         = currentTime + (minutes * 60 * 1000);
+    
+    if (! deviceObject) {
+        return;
+    }
+    
+    // Turn on device
+    console.log('Turning on random device '+deviceObject.id+' for '+minutes+' minutes');
     if (deviceObject.get('deviceType') === 'switchBinary') {
         deviceObject.performCommand('on');
     } else if (deviceObject.get('deviceType') === 'switchMultilevel') {
         deviceObject.performCommand('exact',99);
+    } else {
+        console.error('Unspported device type '+deviceObject.get('deviceType'));
+        return;
     }
-    deviceObject.set('metrics:autooff',offTime);
     
-    setTimeout(function() {
-        self.autoOff(deviceObject);
+    if (self.timerOff) {
+        clearTimeout(self.timerOff);
+    }
+    
+    self.timerOff = setTimeout(function() {
+        self.randomOff();
     },offTime);
+    
+    self.status = { 
+        'mode': true, 
+        'device': deviceObject.id,
+        'on': currentTime,
+        'off': offTime,
+        'minutes': minutes
+    };
+    saveObject(this.statusId,self.status);
 };
 
-RandomDevice.prototype.autoOff = function (deviceObject) {
-    if (deviceObject.get('deviveType') === 'switchBinary') {
+RandomDevice.prototype.randomOff = function () {
+    var self = this;
+    
+    if (self.status.mode === false) {
+        console.error('Random device already off');
+        return;
+    }
+    
+    var deviceObject = self.controller.devices.get(self.status.device);
+    
+    console.log('Turning off random device '+deviceObject.id);
+    
+    if (deviceObject.get('deviceType') === 'switchBinary') {
         deviceObject.performCommand('off');
-    } else if (device.get('deviveType') === 'switchMultilevel') {
+    } else if (deviceObject.get('deviceType') === 'switchMultilevel') {
         deviceObject.performCommand('exact',0);
     }
-    deviceObject.set('metrics:autooff',null);
-}
+    
+    if (self.timerOff) {
+        clearTimeout(self.timerOff);
+        self.timerOff = null;
+    }
+    
+    self.status = { 'mode': false };
+    saveObject(self.statusId,self.status);
+};
 
 RandomDevice.prototype.stop = function () {
+    var self = this;
     RandomDevice.super_.prototype.stop.call(this);
     
-    if (this.timer) {
-        clearInterval(this.timer);
+    if (self.timerRoll) {
+        clearInterval(self.timerRoll);
     }
-    if (this.vDev) {
-        this.controller.devices.remove(this.vDev.id);
-        this.vDev = null;
+    if (self.timerOff) {
+        clearTimeout(self.timerOff);
+    }
+    if (self.vDev) {
+        self.controller.devices.remove(self.vDev.id);
+        self.vDev = null;
     }
 };
