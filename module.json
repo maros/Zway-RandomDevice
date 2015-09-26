@@ -6,6 +6,7 @@
     "homepage": "http://k-1.com",
     "icon": "icon_on.png",
     "version": "1.0.0",
+    "moduleName": "RandomDevice",
     "maturity": "stable",
     "repository": {
         "type": "git",

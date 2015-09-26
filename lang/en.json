@@ -5,5 +5,5 @@
   "time_to_label": "To time",
   "devices_label": "Devices",
   "probability_label": "Probability",
-  "probability_helper": "TODO"
+  "probability_helper": "Probability in percent that random device will be turned on"
 }
