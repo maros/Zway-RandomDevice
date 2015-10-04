@@ -41,9 +41,10 @@ RandomDevice.prototype.init = function (config) {
         this.status = { 'mode': false };
     } else if (this.status === true) {
         if (this.status.off > currentTime) {
-            self.timerOff = setTimeout(function() {
-                self.randomOff();
-            },this.status.off);
+            self.timerOff = setTimeout(
+                _.bind(self.randomOff,self),
+                this.status.off
+            );
         }
     }
     
@@ -61,23 +62,24 @@ RandomDevice.prototype.init = function (config) {
             deviceType: 'switchBinary'
         },
         handler: function(command, args) {
-            var level = command;
-            if (level !== 'on') {
-                level = 'off';
+            if (command !== 'on'
+                && command !== 'off') {
+                return;
             }
-            if (level ==='off'
+            if (command ==='off'
                 && self.status.mode === true) {
                 self.randomOff();
             }
-            this.set("metrics:level", level);
-            this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+level+".png");
+            this.set("metrics:level", command);
+            this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+command+".png");
         },
         moduleId: this.id
     });
     
-    this.timerRoll = setInterval(function() {
-        self.rollDice();
-    }, 1000*60);
+    this.timerRoll = setInterval(
+        _.bind(self.rollDice,self), 
+        1000*60
+    );
 };
 
 RandomDevice.prototype.rollDice = function () {
@@ -118,7 +120,6 @@ RandomDevice.prototype.rollDice = function () {
     if (randomOn) {
         return;
     }
-    
     
     // Check random device on
     if (self.vDev.get('metrics:level') !== 'on') {
@@ -161,9 +162,10 @@ RandomDevice.prototype.rollDice = function () {
         clearTimeout(self.timerOff);
     }
     
-    self.timerOff = setTimeout(function() {
-        self.randomOff();
-    },offTime);
+    self.timerOff = setTimeout(
+        _.bind(self.randomOff,self),
+        offTime
+    );
     
     self.status = { 
         'mode': true, 
@@ -175,7 +177,7 @@ RandomDevice.prototype.rollDice = function () {
     saveObject(this.statusId,self.status);
 };
 
-RandomDevice.prototype.randomOff = function () {
+RandomDevice.prototype.randomOff = function() {
     var self = this;
     
     if (self.status.mode === false) {
@@ -202,7 +204,7 @@ RandomDevice.prototype.randomOff = function () {
     saveObject(self.statusId,self.status);
 };
 
-RandomDevice.prototype.stop = function () {
+RandomDevice.prototype.stop = function() {
     var self = this;
     RandomDevice.super_.prototype.stop.call(this);
     
