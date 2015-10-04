@@ -167,6 +167,7 @@ RandomDevice.prototype.rollDice = function () {
         offTime
     );
     
+    self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_triggered.png");
     self.status = { 
         'mode': true, 
         'device': deviceObject.id,
@@ -199,6 +200,8 @@ RandomDevice.prototype.randomOff = function() {
         clearTimeout(self.timerOff);
         self.timerOff = null;
     }
+    
+    self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+self.vDev.get('metrics:level')+".png");
     
     self.status = { 'mode': false };
     saveObject(self.statusId,self.status);
