@@ -59,6 +59,9 @@ RandomDevice.prototype.init = function (config) {
                 icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png"
             }
         },
+        overlay: {
+            deviceType: 'switchBinary'
+        },
         handler: function(command, args) {
             if (command !== 'on'
                 && command !== 'off') {
