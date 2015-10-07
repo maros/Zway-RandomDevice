@@ -1,6 +1,8 @@
 # Zway-RandomDevice
 
-Randomly turn on/off devices to simulate presence
+Randomly turn on/off devices to simulate presence. This plugin will ensure
+that only one device is triggered at a time, and that the triggered device
+is properly turned off if the random virtual device is turned off.
 
 # Configuration
 
