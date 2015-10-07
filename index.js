@@ -52,14 +52,12 @@ RandomDevice.prototype.init = function (config) {
     this.vDev = this.controller.devices.create({
         deviceId: "RandomDevice_" + this.id,
         defaults: {
+            deviceType: 'switchBinary',
             metrics: {
                 level: 'off',
                 title: langFile.title,
                 icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png"
             }
-        },
-        overlay: {
-            deviceType: 'switchBinary'
         },
         handler: function(command, args) {
             if (command !== 'on'
@@ -175,7 +173,7 @@ RandomDevice.prototype.rollDice = function () {
         'off': offTime,
         'minutes': minutes
     };
-    saveObject(this.statusId,self.status);
+    saveObject(self.statusId,self.status);
 };
 
 RandomDevice.prototype.randomOff = function() {
