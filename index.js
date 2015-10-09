@@ -77,6 +77,8 @@ RandomDevice.prototype.init = function (config) {
         moduleId: this.id
     });
     
+    // TODO add check callback to devices?
+    
     this.timerRoll = setInterval(
         _.bind(self.rollDice,self), 
         1000*60
@@ -159,6 +161,8 @@ RandomDevice.prototype.rollDice = function () {
         return;
     }
     
+    deviceObject.set('metrics:auto',true);
+    
     if (self.timerOff) {
         clearTimeout(self.timerOff);
     }
@@ -196,6 +200,7 @@ RandomDevice.prototype.randomOff = function() {
     } else if (deviceObject.get('deviceType') === 'switchMultilevel') {
         deviceObject.performCommand('exact',0);
     }
+    deviceObject.set('metrics:auto',false);
     
     if (self.timerOff) {
         clearTimeout(self.timerOff);
