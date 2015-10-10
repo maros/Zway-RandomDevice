@@ -215,7 +215,6 @@ RandomDevice.prototype.randomOff = function() {
 
 RandomDevice.prototype.stop = function() {
     var self = this;
-    RandomDevice.super_.prototype.stop.call(this);
     
     if (self.timerRoll) {
         clearInterval(self.timerRoll);
@@ -227,4 +226,5 @@ RandomDevice.prototype.stop = function() {
         self.controller.devices.remove(self.vDev.id);
         self.vDev = null;
     }
+    RandomDevice.super_.prototype.stop.call(this);
 };
