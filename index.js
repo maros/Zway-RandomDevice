@@ -85,6 +85,26 @@ RandomDevice.prototype.init = function (config) {
     );
 };
 
+RandomDevice.prototype.stop = function() {
+    var self = this;
+    
+    if (self.timerRoll) {
+        clearInterval(self.timerRoll);
+    }
+    if (self.timerOff) {
+        clearTimeout(self.timerOff);
+    }
+    if (self.vDev) {
+        self.controller.devices.remove(self.vDev.id);
+        self.vDev = null;
+    }
+    RandomDevice.super_.prototype.stop.call(this);
+};
+
+//----------------------------------------------------------------------------
+//--- Module methods
+//----------------------------------------------------------------------------
+
 RandomDevice.prototype.rollDice = function () {
     var self=this;
     
@@ -211,20 +231,4 @@ RandomDevice.prototype.randomOff = function() {
     
     self.status = { 'mode': false };
     saveObject(self.statusId,self.status);
-};
-
-RandomDevice.prototype.stop = function() {
-    var self = this;
-    
-    if (self.timerRoll) {
-        clearInterval(self.timerRoll);
-    }
-    if (self.timerOff) {
-        clearTimeout(self.timerOff);
-    }
-    if (self.vDev) {
-        self.controller.devices.remove(self.vDev.id);
-        self.vDev = null;
-    }
-    RandomDevice.super_.prototype.stop.call(this);
 };
