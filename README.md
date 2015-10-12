@@ -24,7 +24,9 @@ List of devices that should be controlled randomly
 
 # Virtual Devices
 
-This module creates a virtual binary switch device to turn on/off random devices.
+This module creates a virtual binary switch device to turn on/off the
+random device controller. Current operation mode (random light triggered, on, 
+off) is indicated by the icon color.
 
 # Events
 
