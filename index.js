@@ -32,7 +32,7 @@ RandomDevice.prototype.init = function (config) {
     
     var currentTime = (new Date()).getTime();
     var langFile = self.controller.loadModuleLang("RandomDevice");
-    this.timerOff = null;
+    this.timerOff = undefined;
     
     // Read status from file and init
     this.statusId = "RandomDevice_" + self.id;
@@ -96,7 +96,7 @@ RandomDevice.prototype.stop = function() {
     }
     if (self.vDev) {
         self.controller.devices.remove(self.vDev.id);
-        self.vDev = null;
+        self.vDev = undefined;
     }
     RandomDevice.super_.prototype.stop.call(this);
 };
@@ -224,7 +224,7 @@ RandomDevice.prototype.randomOff = function() {
     
     if (self.timerOff) {
         clearTimeout(self.timerOff);
-        self.timerOff = null;
+        self.timerOff = undefined;
     }
     
     self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+self.vDev.get('metrics:level')+".png");
