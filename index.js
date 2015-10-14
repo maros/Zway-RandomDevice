@@ -52,8 +52,8 @@ RandomDevice.prototype.init = function (config) {
     this.vDev = this.controller.devices.create({
         deviceId: "RandomDevice_" + this.id,
         defaults: {
-            deviceType: 'switchBinary',
             metrics: {
+                probeTitle: 'controller',
                 level: 'off',
                 title: langFile.title,
                 icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png"
