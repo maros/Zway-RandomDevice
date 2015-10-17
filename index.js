@@ -56,7 +56,8 @@ RandomDevice.prototype.init = function (config) {
                 probeTitle: 'controller',
                 level: 'off',
                 title: langFile.title,
-                icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png"
+                icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png",
+                triggered: false
             }
         },
         overlay: {
@@ -192,6 +193,7 @@ RandomDevice.prototype.rollDice = function () {
         offTime
     );
     
+    self.vDev.set("metrics:triggered",true);
     self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_triggered.png");
     self.status = { 
         'mode': true, 
@@ -227,7 +229,9 @@ RandomDevice.prototype.randomOff = function() {
         self.timerOff = undefined;
     }
     
-    self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+self.vDev.get('metrics:level')+".png");
+    var level = self.vDev.get('metrics:level');
+    self.vDev.set("metrics:triggered",false);
+    self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+level+".png");
     
     self.status = { 'mode': false };
     saveObject(self.statusId,self.status);
