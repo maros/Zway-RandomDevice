@@ -1,6 +1,6 @@
 /*** RandomDevice Z-Way HA module *******************************************
 
-Version: 1.0.0
+Version: 1.00
 (c) Maroš Kollár, 2015
 -----------------------------------------------------------------------------
 Author: maros@k-1.com <maros@k-1.com>
@@ -16,6 +16,9 @@ Description:
 function RandomDevice (id, controller) {
     // Call superconstructor first (AutomationModule)
     RandomDevice.super_.call(this, id, controller);
+    
+    this.timerOff   = undefined;
+    this.timerRoll  = undefined;
 }
 
 inherits(RandomDevice, AutomationModule);
@@ -32,21 +35,7 @@ RandomDevice.prototype.init = function (config) {
     
     var currentTime = (new Date()).getTime();
     var langFile = self.controller.loadModuleLang("RandomDevice");
-    this.timerOff = undefined;
     
-    // Read status from file and init
-    this.statusId = "RandomDevice_" + self.id;
-    this.status = loadObject(this.statusId);
-    if (! this.status ) {
-        this.status = { 'mode': false };
-    } else if (this.status === true) {
-        if (this.status.off > currentTime) {
-            self.timerOff = setTimeout(
-                _.bind(self.randomOff,self),
-                this.status.off
-            );
-        }
-    }
     
     // Create vdev
     this.vDev = this.controller.devices.create({
@@ -57,7 +46,10 @@ RandomDevice.prototype.init = function (config) {
                 level: 'off',
                 title: langFile.title,
                 icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png",
-                triggered: false
+                triggered: false,
+                device: null,
+                offTime: null,
+                onTime: null
             }
         },
         overlay: {
@@ -69,16 +61,32 @@ RandomDevice.prototype.init = function (config) {
                 return;
             }
             if (command ==='off'
-                && self.status.mode === true) {
+                && self.vDev.get('metrics:triggered') === true) {
                 self.randomOff();
             }
+            console.log('[RandomDevice] Turning '+command+' random device controller');
             this.set("metrics:level", command);
             this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+command+".png");
         },
         moduleId: this.id
     });
     
-    // TODO add check callback to devices?
+    if (this.vDev.get('metrics:triggered') === true) {
+        console.log('[RandomDevice] Init found triggered device');
+        var offTime = this.vDev.get('metrics:offTime');
+        if (offTime > currentTime) {
+            self.timerOff = setTimeout(
+                _.bind(self.randomOff,self),
+                (offTime-currentTime)
+            );
+        } else {
+            self.randomOff();
+        }
+    } else {
+        self.vDev.set("metrics:device",null);
+        self.vDev.set("metrics:offTime",null);
+        self.vDev.set("metrics:onTime",null);
+    }
     
     this.timerRoll = setInterval(
         _.bind(self.rollDice,self), 
@@ -112,10 +120,12 @@ RandomDevice.prototype.rollDice = function () {
     var currentTime = (new Date()).getTime();
     var randomOn = false;
     var devicesConfig = self.config.devices;
+    var triggered = self.vDev.get('metrics:triggered');
     
-    if (self.status.mode === true
-        && self.status.off < currentTime) {
+    if (triggered === true
+        && self.vDev.get('metrics:offTime') < currentTime) {
         self.randomOff();
+        triggered = false;
     }
     
     _.each(devicesConfig,function(deviceId) {
@@ -131,8 +141,8 @@ RandomDevice.prototype.rollDice = function () {
                 deviceObject.get('deviceType') === 'switchMultilevel'
                 && deviceLevel === 0
             )) {
-            if (self.status.mode === true
-                && self.status.device === deviceId) {
+            if (triggered === true
+                && self.vDev.get('metrics:device') === deviceId) {
                 self.randomOff();
             }
             return;
@@ -160,25 +170,26 @@ RandomDevice.prototype.rollDice = function () {
     var randomDevice    = Math.round(Math.random() * (devicesConfig.length-1));
     var deviceId        = devicesConfig[randomDevice];
     
-    
     // Roll dice for duration
     var interval        = parseInt(self.config.timeTo) - parseInt(self.config.timeFrom);
     var minutes         = Math.round(Math.random() * interval) + parseInt(self.config.timeFrom);
     var deviceObject    = self.controller.devices.get(deviceId);
-    var offTime         = currentTime + (minutes * 60 * 1000);
+    var duration        = (minutes * 60 * 1000);
+    var offTime         = currentTime + duration;
     
     if (! deviceObject) {
+        console.error('[RandomDevice] No device for id '+deviceId);
         return;
     }
     
     // Turn on device
-    console.log('Turning on random device '+deviceObject.id+' for '+minutes+' minutes');
+    console.log('[RandomDevice] Turning on random device '+deviceObject.id+' for '+minutes+' minutes');
     if (deviceObject.get('deviceType') === 'switchBinary') {
         deviceObject.performCommand('on');
     } else if (deviceObject.get('deviceType') === 'switchMultilevel') {
         deviceObject.performCommand('exact',99);
     } else {
-        console.error('Unspported device type '+deviceObject.get('deviceType'));
+        console.error('[RandomDevice] Unspported device type '+deviceObject.get('deviceType'));
         return;
     }
     
@@ -190,32 +201,27 @@ RandomDevice.prototype.rollDice = function () {
     
     self.timerOff = setTimeout(
         _.bind(self.randomOff,self),
-        offTime
+        duration
     );
     
-    self.vDev.set("metrics:triggered",true);
     self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_triggered.png");
-    self.status = { 
-        'mode': true, 
-        'device': deviceObject.id,
-        'on': currentTime,
-        'off': offTime,
-        'minutes': minutes
-    };
-    saveObject(self.statusId,self.status);
+    self.vDev.set("metrics:triggered",true);
+    self.vDev.set("metrics:device",deviceObject.id);
+    self.vDev.set("metrics:offTime",offTime);
+    self.vDev.set("metrics:onTime",currentTime);
 };
 
 RandomDevice.prototype.randomOff = function() {
     var self = this;
     
-    if (self.status.mode === false) {
-        console.error('Random device already off');
+    if (self.vDev.get("metrics:triggered") === false) {
+        console.error('[RandomDevice] Random device already off');
         return;
     }
     
-    var deviceObject = self.controller.devices.get(self.status.device);
+    var deviceObject = self.controller.devices.get(self.vDev.get("metrics:device"));
     
-    console.log('Turning off random device '+deviceObject.id);
+    console.log('[RandomDevice] Turning off random device '+deviceObject.id);
     
     if (deviceObject.get('deviceType') === 'switchBinary') {
         deviceObject.performCommand('off');
@@ -230,9 +236,10 @@ RandomDevice.prototype.randomOff = function() {
     }
     
     var level = self.vDev.get('metrics:level');
-    self.vDev.set("metrics:triggered",false);
     self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+level+".png");
+    self.vDev.set("metrics:triggered",false);
+    self.vDev.set("metrics:device",null);
+    self.vDev.set("metrics:offTime",null);
+    self.vDev.set("metrics:onTime",null);
     
-    self.status = { 'mode': false };
-    saveObject(self.statusId,self.status);
 };
