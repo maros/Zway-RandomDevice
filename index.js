@@ -36,7 +36,6 @@ RandomDevice.prototype.init = function (config) {
     var currentTime = (new Date()).getTime();
     var langFile = self.controller.loadModuleLang("RandomDevice");
     
-    
     // Create vdev
     this.vDev = this.controller.devices.create({
         deviceId: "RandomDevice_" + this.id,
@@ -130,6 +129,10 @@ RandomDevice.prototype.rollDice = function () {
     
     _.each(devicesConfig,function(deviceId) {
         var deviceObject = self.controller.devices.get(deviceId);
+        if (deviceObject == null) {
+            return;
+        }
+        
         var deviceLevel  = deviceObject.get('metrics:level');
         if (
             (
@@ -177,7 +180,7 @@ RandomDevice.prototype.rollDice = function () {
     var duration        = (minutes * 60 * 1000);
     var offTime         = currentTime + duration;
     
-    if (! deviceObject) {
+    if (deviceObject == null) {
         console.error('[RandomDevice] No device for id '+deviceId);
         return;
     }
