@@ -190,7 +190,7 @@ RandomDevice.prototype.rollDice = function () {
     if (deviceObject.get('deviceType') === 'switchBinary') {
         deviceObject.performCommand('on');
     } else if (deviceObject.get('deviceType') === 'switchMultilevel') {
-        deviceObject.performCommand('exact',99);
+        deviceObject.performCommand('exact',{ level: 99 });
     } else {
         console.error('[RandomDevice] Unspported device type '+deviceObject.get('deviceType'));
         return;
@@ -226,11 +226,7 @@ RandomDevice.prototype.randomOff = function() {
     
     console.log('[RandomDevice] Turning off random device '+deviceObject.id);
     
-    if (deviceObject.get('deviceType') === 'switchBinary') {
-        deviceObject.performCommand('off');
-    } else if (deviceObject.get('deviceType') === 'switchMultilevel') {
-        deviceObject.performCommand('exact',0);
-    }
+    deviceObject.performCommand('off');
     deviceObject.set('metrics:auto',false);
     
     if (self.timerOff) {
