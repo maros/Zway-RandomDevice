@@ -24,20 +24,24 @@
                   "type" : "select"
                }
             },
-            "label" : "__devices_label__"
+            "label" : "__devices_label__",
+            "order": 4
          },
          "probability" : {
             "helper" : "__probability_helper__",
             "label" : "__probability_label__",
-            "type" : "text"
+            "type" : "text",
+            "order": 1
          },
          "timeFrom" : {
             "label" : "__time_from_label__",
-            "type" : "text"
+            "type" : "text",
+            "order": 2
          },
          "timeTo" : {
             "label" : "__time_to_label__",
-            "type" : "text"
+            "type" : "text",
+            "order": 3
          }
       }
    },
