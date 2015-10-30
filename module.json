@@ -59,6 +59,7 @@
                "required" : true
             },
             "minItems" : 1,
+            "uniqueItems": true,
             "type" : "array"
          },
          "probability" : {
