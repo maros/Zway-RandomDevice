@@ -25,23 +25,23 @@
                }
             },
             "label" : "__devices_label__",
-            "order": 4
+            "order" : 4
          },
          "probability" : {
             "helper" : "__probability_helper__",
             "label" : "__probability_label__",
-            "type" : "text",
-            "order": 1
+            "order" : 1,
+            "type" : "text"
          },
          "timeFrom" : {
             "label" : "__time_from_label__",
-            "type" : "text",
-            "order": 2
+            "order" : 2,
+            "type" : "text"
          },
          "timeTo" : {
             "label" : "__time_to_label__",
-            "type" : "text",
-            "order": 3
+            "order" : 3,
+            "type" : "text"
          }
       }
    },
@@ -59,8 +59,8 @@
                "required" : true
             },
             "minItems" : 1,
-            "uniqueItems": true,
-            "type" : "array"
+            "type" : "array",
+            "uniqueItems" : true
          },
          "probability" : {
             "maximum" : 100,
@@ -83,5 +83,5 @@
       "type" : "object"
    },
    "singleton" : false,
-   "version" : "1.01"
+   "version" : "1.02"
 }
