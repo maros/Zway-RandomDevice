@@ -59,6 +59,9 @@ it under the terms of the GNU General Public License as published by
 the Free Software Foundation, either version 3 of the License, or any 
 later version.
 
+Dice icon by Mister Pixel from the Noun Project.
+Check Mark icon by aguycalledgary from the Noun Project
+
 This program is distributed in the hope that it will be useful,
 but WITHOUT ANY WARRANTY; without even the implied warranty of
 MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
