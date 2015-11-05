@@ -4,8 +4,8 @@
 
 1.01 2015 Oct 25, Sun
     * Store triggered in vDev metrics
-	* Refactor storage of state data
-	* Check for missing devices
+    * Refactor storage of state data
+    * Check for missing devices
 
 1.00 2015 Oct 14, Wed
     * Initial version
