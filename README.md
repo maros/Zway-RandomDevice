@@ -1,18 +1,14 @@
 # Zway-RandomDevice
 
-Randomly turn on/off devices to simulate presence. This plugin will ensure
+Randomly turn on/off devices to simulate presence. This module will ensure
 that only one device is triggered at a time, and that the triggered device
-is properly turned off if the random virtual device is turned off.
+is properly turned off once the random virtual device is turned off.
 
 # Configuration
 
 ## timeFrom, timeTo:
 
-Sets the bounds for random devices times
-
-## timeFrom, timeTo:
-
-Sets the bounds for random devices times
+Sets the bounds for random device on times in minutes
 
 ## probability:
 
@@ -27,7 +23,8 @@ List of devices that should be controlled randomly
 This module creates a virtual binary switch device to turn on/off the
 random device controller. Current operation mode (random light triggered, on, 
 off) is indicated by the icon color. metrics:triggered stores if currently
-a device is triggered by the random device
+a device is triggered by the random device. metrics:rain stores the current
+rain status, regardless of the timeout.
 
 # Events
 
