@@ -1,6 +1,6 @@
 {
    "author" : "Maroš Kollár",
-   "category" : "schedule",
+   "category" : "scheduling",
    "defaults" : {
       "description" : "__description__",
       "probability" : 10,
