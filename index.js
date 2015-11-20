@@ -41,7 +41,6 @@ RandomDevice.prototype.init = function (config) {
         deviceId: "RandomDevice_" + this.id,
         defaults: {
             metrics: {
-                probeTitle: 'controller',
                 level: 'off',
                 title: langFile.title,
                 icon: "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_off.png",
@@ -52,6 +51,7 @@ RandomDevice.prototype.init = function (config) {
             }
         },
         overlay: {
+            probeTitle: 'RandomController',
             deviceType: 'switchBinary'
         },
         handler: function(command, args) {
