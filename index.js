@@ -129,7 +129,7 @@ RandomDevice.prototype.rollDice = function () {
     
     _.each(devicesConfig,function(deviceId) {
         var deviceObject = self.controller.devices.get(deviceId);
-        if (deviceObject == null) {
+        if (deviceObject === null) {
             return;
         }
         
@@ -174,13 +174,13 @@ RandomDevice.prototype.rollDice = function () {
     var deviceId        = devicesConfig[randomDevice];
     
     // Roll dice for duration
-    var interval        = parseInt(self.config.timeTo) - parseInt(self.config.timeFrom);
-    var minutes         = Math.round(Math.random() * interval) + parseInt(self.config.timeFrom);
+    var interval        = parseInt(self.config.timeTo,10) - parseInt(self.config.timeFrom,10);
+    var minutes         = Math.round(Math.random() * interval) + parseInt(self.config.timeFrom,10);
     var deviceObject    = self.controller.devices.get(deviceId);
     var duration        = (minutes * 60 * 1000);
     var offTime         = currentTime + duration;
     
-    if (deviceObject == null) {
+    if (deviceObject === null) {
         console.error('[RandomDevice] No device for id '+deviceId);
         return;
     }
