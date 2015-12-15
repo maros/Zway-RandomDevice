@@ -28,7 +28,11 @@ rain status, regardless of the timeout.
 
 # Events
 
-No events are emitted
+## light.off
+
+Emits an event whenever a light is switched off. ie. Allows other lights such
+as motion triggers, to act immediately after random lights have been switched
+off.
 
 # Installation
 

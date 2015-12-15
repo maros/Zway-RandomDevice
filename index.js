@@ -241,4 +241,10 @@ RandomDevice.prototype.randomOff = function() {
     self.vDev.set("metrics:offTime",null);
     self.vDev.set("metrics:onTime",null);
     
+    self.controller.emit('light.off',{ 
+        id:         self.id,
+        title:      self.vDev.get('metrics:title'),
+        location:   self.vDev.get('metrics:location'),
+        mode:       false
+    });
 };
