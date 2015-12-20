@@ -66,7 +66,7 @@ RandomDevice.prototype.init = function (config) {
             
             if (command === 'on') {
                 self.startRollDice();
-            } else if (command === 'on') {
+            } else if (command === 'off') {
                 self.clearRollDice();
             }
             
@@ -128,7 +128,8 @@ RandomDevice.prototype.clearRollDice = function() {
 RandomDevice.prototype.startRollDice = function() {
     var self = this;
     
-    if (self.vDev.get('metrics:level') !== 'on') {
+    if (self.vDev.get('metrics:level') !== 'on'
+        || self.vDev.get('metrics:triggered')) {
         return;
     }
     
