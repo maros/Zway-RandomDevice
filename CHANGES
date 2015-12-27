@@ -1,3 +1,13 @@
+1.03 2015 Dec 27, Sun
+    * German translation
+    * Fix errors in roll dice calc
+    * Improve random intervals
+    * Emit event on off
+    * Cleanup jshint issues
+    * Set probeType and probeTitle
+    * Update category
+    * Update documentation
+
 1.02 2015 Nov 01, Sun
     * Cleanup module definition
     * Fix dimmer set
