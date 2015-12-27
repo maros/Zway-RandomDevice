@@ -1,0 +1,9 @@
+{
+  "title": "Zufallsschaltung",
+  "description": "Schaltet Aktoren wie Dimmer oder binäre Schalter zufällig ein um zB. Anwesenheit zu simmulieren. Die Modul stellt sicher dass immer nur ein Licht eingeschalten ist, und alle Lichter ausgeschalten werden sobald das Modul ausgeschalten wird.",
+  "time_from_label": "Minimale Laufzeit",
+  "time_to_label": "Maximale Laufzeit",
+  "devices_label": "Geräte",
+  "probability_label": "Wahrscheinlichkeit",
+  "probability_helper": "Wahrscheinlichkeit in Prozent dass ein Gerät eingeschalten wird."
+}
