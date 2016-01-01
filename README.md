@@ -4,6 +4,9 @@ Randomly turn on/off devices to simulate presence. This module will ensure
 that only one device is triggered at a time, and that the triggered device
 is properly turned off once the random virtual device is turned off.
 
+This module works well with the ConditionSwitch module that can be used to
+turn of random devices based on presence mode and time.
+
 # Configuration
 
 ## timeFrom, timeTo:
