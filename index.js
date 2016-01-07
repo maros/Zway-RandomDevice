@@ -37,8 +37,8 @@ RandomDevice.prototype.init = function (config) {
     var langFile = self.controller.loadModuleLang("RandomDevice");
     
     // Create vdev
-    this.vDev = this.controller.devices.create({
-        deviceId: "RandomDevice_" + this.id,
+    self.vDev = this.controller.devices.create({
+        deviceId: "RandomDevice_" + self.id,
         defaults: {
             metrics: {
                 level: 'off',
@@ -64,15 +64,15 @@ RandomDevice.prototype.init = function (config) {
                 self.randomOff();
             }
             
+            console.log('[RandomDevice] Turning '+command+' random device controller');
+            this.set("metrics:level", command);
+            this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+command+".png");
+            
             if (command === 'on') {
                 self.startRollDice();
             } else if (command === 'off') {
                 self.clearRollDice();
             }
-            
-            console.log('[RandomDevice] Turning '+command+' random device controller');
-            this.set("metrics:level", command);
-            this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+command+".png");
         },
         moduleId: this.id
     });
