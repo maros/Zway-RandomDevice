@@ -139,7 +139,7 @@ RandomDevice.prototype.startRollDice = function() {
     self.clearRollDice();
     self.timeoutRollDice = setTimeout(
         _.bind(self.rollDice,self), 
-        1000*minutes
+        1000*60*minutes
     );
 };
 
