@@ -1,6 +1,6 @@
 {
-  "title": "Random device",
-  "description": "Control switches and dimmers randomly ie. to simulate presence. Will ensure that only one light is triggered at a time",
+  "m_title" : "Random device",
+  "m_descr": "Control switches and dimmers randomly ie. to simulate presence. Will ensure that only one light is triggered at a time",
   "time_from_label": "From time",
   "time_to_label": "To time",
   "devices_label": "Devices",

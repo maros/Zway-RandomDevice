@@ -2,11 +2,11 @@
    "author" : "Maroš Kollár",
    "category" : "scheduling",
    "defaults" : {
-      "description" : "__description__",
+      "description" : "__m_descr__",
       "probability" : 10,
       "timeFrom" : 5,
       "timeTo" : 15,
-      "title" : "__title__"
+      "title" : "__m_title__"
    },
    "dependencies" : [],
    "homepage" : "https://github.com/maros/Zway-Presence/",
