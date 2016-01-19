@@ -1,9 +1,9 @@
 {
-  "m_title" : "Random device",
-  "m_descr": "Control switches and dimmers randomly ie. to simulate presence. Will ensure that only one light is triggered at a time",
-  "time_from_label": "From time",
-  "time_to_label": "To time",
-  "devices_label": "Devices",
-  "probability_label": "Probability",
-  "probability_helper": "Probability in percent that random device will be turned on"
+   "devices_label" : "Devices",
+   "m_descr" : "Control switches and dimmers randomly ie. to simulate presence. Will ensure that only one light is triggered at a time\nCheck https://github.com/maros/Zway-Presence//blob/master/README.md for detailed documentation.",
+   "m_title" : "Random device",
+   "probability_helper" : "Probability in percent that random device will be turned on",
+   "probability_label" : "Probability",
+   "time_from_label" : "From time",
+   "time_to_label" : "To time"
 }

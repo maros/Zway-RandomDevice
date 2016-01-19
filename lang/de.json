@@ -1,9 +1,9 @@
 {
-  "m_title" : "Zufallsschaltung",
-  "m_descr": "Schaltet Aktoren wie Dimmer oder binäre Schalter zufällig ein um zB. Anwesenheit zu simmulieren. Die Modul stellt sicher dass immer nur ein Licht eingeschalten ist, und alle Lichter ausgeschalten werden sobald das Modul ausgeschalten wird.",
-  "time_from_label": "Minimale Laufzeit",
-  "time_to_label": "Maximale Laufzeit",
-  "devices_label": "Geräte",
-  "probability_label": "Wahrscheinlichkeit",
-  "probability_helper": "Wahrscheinlichkeit in Prozent dass ein Gerät eingeschalten wird."
+   "devices_label" : "Geräte",
+   "m_descr" : "Schaltet Aktoren wie Dimmer oder binäre Schalter zufällig ein um zB. Anwesenheit zu simmulieren. Die Modul stellt sicher dass immer nur ein Licht eingeschalten ist, und alle Lichter ausgeschalten werden sobald das Modul ausgeschalten wird.\nSiehe https://github.com/maros/Zway-Presence//blob/master/README.md für detailliertere Dokumentation.",
+   "m_title" : "Zufallsschaltung",
+   "probability_helper" : "Wahrscheinlichkeit in Prozent dass ein Gerät eingeschalten wird.",
+   "probability_label" : "Wahrscheinlichkeit",
+   "time_from_label" : "Minimale Laufzeit",
+   "time_to_label" : "Maximale Laufzeit"
 }
