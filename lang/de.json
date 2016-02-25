@@ -5,5 +5,6 @@
    "probability_helper" : "Wahrscheinlichkeit in Prozent dass ein Gerät eingeschalten wird.",
    "probability_label" : "Wahrscheinlichkeit",
    "time_from_label" : "Minimale Laufzeit",
-   "time_to_label" : "Maximale Laufzeit"
+   "time_to_label" : "Maximale Laufzeit",
+   "time_helper": "In Minuten"
 }

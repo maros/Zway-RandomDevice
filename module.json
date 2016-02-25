@@ -35,11 +35,13 @@
          },
          "timeFrom" : {
             "label" : "__time_from_label__",
+            "helper" : "__time_helper__",
             "order" : 2,
             "type" : "text"
          },
          "timeTo" : {
             "label" : "__time_to_label__",
+            "helper" : "__time_helper__",
             "order" : 3,
             "type" : "text"
          }
