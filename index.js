@@ -17,8 +17,8 @@ function RandomDevice (id, controller) {
     // Call superconstructor first (AutomationModule)
     RandomDevice.super_.call(this, id, controller);
     
-    this.timerOff   = undefined;
-    this.timerRoll  = undefined;
+    this.timeoutOff         = undefined;
+    this.timeoutRollDice    = undefined;
 }
 
 inherits(RandomDevice, AutomationModule);
@@ -31,13 +31,13 @@ _module = RandomDevice;
 
 RandomDevice.prototype.init = function (config) {
     RandomDevice.super_.prototype.init.call(this, config);
-    var self=this;
+    var self = this;
     
     var currentTime = (new Date()).getTime();
     var langFile = self.controller.loadModuleLang("RandomDevice");
     
     // Create vdev
-    self.vDev = this.controller.devices.create({
+    self.vDev = self.controller.devices.create({
         deviceId: "RandomDevice_" + self.id,
         defaults: {
             metrics: {
@@ -59,11 +59,6 @@ RandomDevice.prototype.init = function (config) {
                 && command !== 'off') {
                 return;
             }
-            if (command ==='off'
-                && self.vDev.get('metrics:triggered') === true) {
-                self.randomOff();
-            }
-            
             console.log('[RandomDevice] Turning '+command+' random device controller');
             this.set("metrics:level", command);
             this.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_"+command+".png");
@@ -71,17 +66,20 @@ RandomDevice.prototype.init = function (config) {
             if (command === 'on') {
                 self.startRollDice();
             } else if (command === 'off') {
+                if (self.vDev.get('metrics:triggered') === true) {
+                    self.randomOff();
+                }
                 self.clearRollDice();
             }
         },
-        moduleId: this.id
+        moduleId: self.id
     });
     
-    if (this.vDev.get('metrics:triggered') === true) {
+    if (self.vDev.get('metrics:triggered') === true) {
         console.log('[RandomDevice] Init found triggered device');
-        var offTime = this.vDev.get('metrics:offTime');
+        var offTime = self.vDev.get('metrics:offTime');
         if (offTime > currentTime) {
-            self.timerOff = setTimeout(
+            self.timeoutOff = setTimeout(
                 _.bind(self.randomOff,self),
                 (offTime-currentTime)
             );
@@ -102,9 +100,11 @@ RandomDevice.prototype.stop = function() {
     
     self.clearRollDice();
     
-    if (self.timerOff) {
-        clearTimeout(self.timerOff);
+    if (typeof(self.timeoutOff) !== 'undefined') {
+        clearTimeout(self.timeoutOff);
+        self.timeoutOff = undefined;
     }
+    
     if (self.vDev) {
         self.controller.devices.remove(self.vDev.id);
         self.vDev = undefined;
@@ -128,23 +128,25 @@ RandomDevice.prototype.clearRollDice = function() {
 RandomDevice.prototype.startRollDice = function() {
     var self = this;
     
-    if (self.vDev.get('metrics:level') !== 'on'
-        || self.vDev.get('metrics:triggered')) {
+    if (self.vDev.get('metrics:level') !== 'on') {
         return;
     }
     
     var interval    = parseInt(self.config.timeTo,10) - parseInt(self.config.timeFrom,10);
-    var minutes     = Math.round(Math.random() * interval) + parseInt(self.config.timeFrom,10);
+    var seconds     = Math.round(Math.random() * interval * 60) + parseInt(self.config.timeFrom,10) * 60;
     
+    console.log('[RandomDevice] Roll dice in '+(seconds));
     self.clearRollDice();
     self.timeoutRollDice = setTimeout(
         _.bind(self.rollDice,self), 
-        1000*60*minutes
+        1000*seconds
     );
 };
 
 RandomDevice.prototype.rollDice = function () {
     var self=this;
+    
+    console.log('[RandomDevice] Roll dice');
     
     var currentTime     = (new Date()).getTime();
     var randomOn        = false;
@@ -187,17 +189,20 @@ RandomDevice.prototype.rollDice = function () {
     
     // Check any device on
     if (randomOn) {
+        console.log('[RandomDevice] Random is already on');
         return;
     }
     
     // Check random device on
     if (self.vDev.get('metrics:level') !== 'on') {
+        console.log('[RandomDevice] Random controller is off');
         return;
     }
     
     // Roll dice for trigger
     var randomTrigger = Math.round(Math.random() * 100);
     if (randomTrigger > self.config.probability) {
+        console.log('[RandomDevice] No matche');
         return;
     }
     
@@ -230,16 +235,16 @@ RandomDevice.prototype.rollDice = function () {
     
     deviceObject.set('metrics:auto',true);
     
-    if (self.timerOff) {
-        clearTimeout(self.timerOff);
+    if (self.timeoutOff) {
+        clearTimeout(self.timeoutOff);
     }
     
-    self.timerOff = setTimeout(
+    self.timeoutOff = setTimeout(
         _.bind(self.randomOff,self),
         duration
     );
     
-    self.clearRollDice();
+    //self.clearRollDice();
     self.vDev.set("metrics:icon", "/ZAutomation/api/v1/load/modulemedia/RandomDevice/icon_triggered.png");
     self.vDev.set("metrics:triggered",true);
     self.vDev.set("metrics:device",deviceObject.id);
@@ -249,8 +254,6 @@ RandomDevice.prototype.rollDice = function () {
 
 RandomDevice.prototype.randomOff = function() {
     var self = this;
-    
-    self.startRollDice();
     
     if (self.vDev.get("metrics:triggered") === false) {
         console.error('[RandomDevice] Random device already off');
@@ -264,9 +267,9 @@ RandomDevice.prototype.randomOff = function() {
     deviceObject.performCommand('off');
     deviceObject.set('metrics:auto',false);
     
-    if (self.timerOff) {
-        clearTimeout(self.timerOff);
-        self.timerOff = undefined;
+    if (self.timeoutOff) {
+        clearTimeout(self.timeoutOff);
+        self.timeoutOff = undefined;
     }
     
     var level = self.vDev.get('metrics:level');
