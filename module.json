@@ -34,14 +34,14 @@
             "type" : "text"
          },
          "timeFrom" : {
-            "label" : "__time_from_label__",
             "helper" : "__time_helper__",
+            "label" : "__time_from_label__",
             "order" : 2,
             "type" : "text"
          },
          "timeTo" : {
-            "label" : "__time_to_label__",
             "helper" : "__time_helper__",
+            "label" : "__time_to_label__",
             "order" : 3,
             "type" : "text"
          }
@@ -85,5 +85,5 @@
       "type" : "object"
    },
    "singleton" : false,
-   "version" : 1.04
+   "version" : 1.05
 }

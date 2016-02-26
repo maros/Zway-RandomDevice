@@ -1,3 +1,9 @@
+1.05 2016 Feb 26, Fri
+    * Rework how random timeouts are handled
+    * Fix timeouts
+    * Helper text for time
+    * Add doc link
+
 1.04 2016 Jan 08, Fri
     * Rename title/description key to make module work in appstore
     * Fix roll dice interval
