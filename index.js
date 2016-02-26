@@ -172,7 +172,7 @@ RandomDevice.prototype.rollDice = function () {
             
             // Random device triggered
             if (self.vDev.get('metrics:device') === deviceId) {
-                triggerDevice = deviceObject;
+                triggeredDevice = deviceObject;
             // Device on for some other reason
             } else {
                 randomOn = true;
@@ -202,6 +202,7 @@ RandomDevice.prototype.rollDice = function () {
     var randomTrigger = Math.round(Math.random() * 100);
     if (randomTrigger > self.config.probability) {
         console.log('[RandomDevice] No match');
+        self.randomOff();
         return;
     }
     
@@ -214,9 +215,10 @@ RandomDevice.prototype.rollDice = function () {
     console.log('INDEX '+randomIndex);
     console.logJS(devicesPool);
     
-    if (triggeredDevice.id === randomDevice.id) {
+    if (triggeredDevice === randomDevice) {
         console.log('[RandomDevice] Extending random device '+randomDevice.id+' for another '+seconds+' seconds');
     } else {
+        console.logJS(triggeredDevice); 
         if (typeof(triggeredDevice) !== 'undefined') {
             triggeredDevice.set('metrics:auto',false);
             triggeredDevice.performCommand('off');
