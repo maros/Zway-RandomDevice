@@ -150,7 +150,6 @@ RandomDevice.prototype.rollDice = function () {
     
     // Get device status
     _.each(self.config.devices,function(deviceId) {
-        console.log('CHECK'+deviceId);
         var deviceObject = self.controller.devices.get(deviceId);
         if (deviceObject === null) {
             return;
@@ -211,9 +210,6 @@ RandomDevice.prototype.rollDice = function () {
     var randomDevice    = devicesPool[randomIndex];
     var duration        = (seconds * 1000);
     var offTime         = currentTime + duration;
-    
-    console.log('INDEX '+randomIndex);
-    console.logJS(devicesPool);
     
     if (triggeredDevice === randomDevice) {
         console.log('[RandomDevice] Extending random device '+randomDevice.id+' for another '+seconds+' seconds');
