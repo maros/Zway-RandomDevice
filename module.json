@@ -8,7 +8,7 @@
       "timeTo" : 15,
       "title" : "__m_title__"
    },
-   "dependencies" : [],
+   "dependencies" : ["BaseModule"],
    "homepage" : "https://github.com/maros/Zway-Presence/",
    "icon" : "icon.png",
    "maturity" : "stable",
