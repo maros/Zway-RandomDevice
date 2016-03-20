@@ -47,7 +47,7 @@ RandomDevice.prototype.init = function (config) {
             }
         },
         overlay: {
-            probeType: 'RandomController',
+            probeType: 'random_controller',
             deviceType: 'switchBinary'
         },
         handler: function(command, args) {
