@@ -218,7 +218,7 @@ RandomDevice.prototype.rollDice = function () {
         }
         
         // Turn on device
-        slef.log('Turning on random device '+randomDevice.id+' for '+seconds+' seconds');
+        self.log('Turning on random device '+randomDevice.id+' for '+seconds+' seconds');
         if (randomDevice.get('deviceType') === 'switchBinary') {
             randomDevice.performCommand('on');
         } else if (randomDevice.get('deviceType') === 'switchMultilevel') {
