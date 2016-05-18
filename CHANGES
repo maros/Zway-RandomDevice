@@ -1,3 +1,10 @@
+1.06 2016 May 18, Wed
+    * Set defaults
+    * Rename probeType
+    * Use BaseModule
+    * Remove debug statements
+    * Update installation howto
+
 1.05 2016 Feb 26, Fri
     * Rework how random timeouts are handled
     * Fix timeouts

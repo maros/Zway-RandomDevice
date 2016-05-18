@@ -3,13 +3,15 @@
    "category" : "scheduling",
    "defaults" : {
       "description" : "__m_descr__",
+      "devices" : [],
       "probability" : 10,
       "timeFrom" : 5,
       "timeTo" : 15,
-      "title" : "__m_title__",
-      "devices": []
+      "title" : "__m_title__"
    },
-   "dependencies" : ["BaseModule"],
+   "dependencies" : [
+      "BaseModule"
+   ],
    "homepage" : "https://github.com/maros/Zway-Presence/",
    "icon" : "icon.png",
    "maturity" : "stable",
@@ -86,5 +88,5 @@
       "type" : "object"
    },
    "singleton" : false,
-   "version" : 1.05
+   "version" : "1.06"
 }
