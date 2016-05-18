@@ -6,7 +6,8 @@
       "probability" : 10,
       "timeFrom" : 5,
       "timeTo" : 15,
-      "title" : "__m_title__"
+      "title" : "__m_title__",
+      "devices": []
    },
    "dependencies" : ["BaseModule"],
    "homepage" : "https://github.com/maros/Zway-Presence/",
