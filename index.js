@@ -263,8 +263,7 @@ RandomDevice.prototype.randomOff = function() {
     
     self.controller.emit('light.off',{ 
         id:         self.id,
-        title:      self.vDev.get('metrics:title'),
-        location:   self.vDev.get('metrics:location'),
-        mode:       false
+        mode:       false,
+        vDev:       self.vDev
     });
 };
