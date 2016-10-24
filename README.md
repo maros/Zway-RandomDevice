@@ -26,8 +26,7 @@ List of devices that should be controlled randomly
 This module creates a virtual binary switch device to turn on/off the
 random device controller. Current operation mode (random light triggered, on, 
 off) is indicated by the icon color. metrics:triggered stores if currently
-a device is triggered by the random device. metrics:rain stores the current
-rain status, regardless of the timeout.
+a device is triggered by the random device.
 
 # Events
 
