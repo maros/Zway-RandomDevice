@@ -28,6 +28,7 @@
                }
             },
             "label" : "__devices_label__",
+            "label" : "__devices_helper__",
             "order" : 4
          },
          "probability" : {
