@@ -27,7 +27,6 @@
                   "type" : "select"
                }
             },
-            "label" : "__devices_label__",
             "label" : "__devices_helper__",
             "order" : 4
          },
@@ -89,5 +88,5 @@
       "type" : "object"
    },
    "singleton" : false,
-   "version" : "1.06"
+   "version" : "1.07"
 }

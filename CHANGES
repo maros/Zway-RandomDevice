@@ -1,3 +1,10 @@
+1.07 2017 Jun 24, Sat
+    * Fix link in module description
+    * Update help
+    * Update documentation
+    * Update light.off event
+    * Update module title
+
 1.06 2016 May 18, Wed
     * Set defaults
     * Rename probeType
